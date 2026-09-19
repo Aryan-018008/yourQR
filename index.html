@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  
+<title>  yourQR — QR Code Generator</title>
+
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
+
+<!-- Font Awesome -->
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
+
+<!-- QR Code Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<link rel="stylesheet" href="Qr.css">
+  
+
+</head>
+
+<body>
+
+  
+<!-- Animated Background -->
+<div class="background">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+
+
+<!-- Main Application -->
+<main class="app">
+
+    <!-- Header -->
+    <header class="header">
+
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-qrcode"></i>
+            </div>
+
+            <div>
+                <h2>  yourQR</h2>
+                <span>Smart QR Generator</span>
+            </div>
+        </div>
+
+        <div class="status-pill">
+            <span class="status-dot"></span>
+            Ready
+        </div>
+
+    </header>
+
+
+    <!-- Content -->
+    <section class="content">
+
+        <!-- LEFT SIDE -->
+        <div class="generator-panel">
+
+            <div class="heading">
+
+                <span class="eyebrow">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    QUICK GENERATOR
+                </span>
+
+                <h1>
+                    Turn anything into a
+                    <span>QR Code.</span>
+                </h1>
+
+                <p>
+                    Enter a URL, message, contact information or any
+                    text and generate a beautiful scannable QR code instantly.
+                </p>
+
+            </div>
+
+
+            <!-- Input -->
+            <div class="input-wrapper">
+
+                <div class="input-header">
+
+                    <label for="qrText">
+                        <i class="fa-solid fa-link"></i>
+                        Your content
+                    </label>
+
+                    <span id="charCount">0 / 1000</span>
+
+                </div>
+
+                <div class="textarea-container">
+
+                    <textarea
+                        id="qrText"
+                        maxlength="1000"
+                        placeholder="Paste your URL or type something..."
+                    ></textarea>
+
+                    <button
+                        class="clear-input"
+                        id="clearInput"
+                        title="Clear"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Examples -->
+            <div class="examples">
+
+                <span>Try:</span>
+
+                <button class="example-btn" data-value="https://google.com">
+                    <i class="fa-solid fa-globe"></i>
+                    Website
+                </button>
+
+                <button class="example-btn" data-value="Hello! Welcome to   yourQR.">
+                    <i class="fa-solid fa-message"></i>
+                    Text
+                </button>
+
+                <button
+                    class="example-btn"
+                    data-value="mailto:hello@example.com"
+                >
+                    <i class="fa-solid fa-envelope"></i>
+                    Email
+                </button>
+
+            </div>
+
+
+            <!-- Generate Button -->
+            <button class="generate-btn" id="generateBtn">
+
+                <span class="btn-content">
+                    <i class="fa-solid fa-qrcode"></i>
+                    Generate QR Code
+                </span>
+
+                <span class="btn-loader">
+                    <span class="spinner"></span>
+                    Generating...
+                </span>
+
+            </button>
+
+
+            <!-- Security -->
+            <div class="security">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <span>
+                    Your data stays in your browser.
+                    Nothing is uploaded.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="preview-panel">
+
+            <div class="preview-header">
+
+                <div>
+                    <span class="preview-label">LIVE PREVIEW</span>
+                    <h3>Your QR Code</h3>
+                </div>
+
+                <div class="generation-status" id="generationStatus">
+                    <span class="status-icon">
+                        <i class="fa-solid fa-circle"></i>
+                    </span>
+
+                    <span id="statusText">Waiting</span>
+                </div>
+
+            </div>
+
+
+            <!-- QR Display -->
+            <div class="qr-container" id="qrContainer">
+
+                <!-- Initial State -->
+                <div class="empty-state" id="emptyState">
+
+                    <div class="empty-icon">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+
+                    <h4>Nothing generated yet</h4>
+
+                    <p>
+                        Enter your content and click
+                        <strong>Generate QR Code</strong>.
+                    </p>
+
+                </div>
+
+
+                <!-- Loading State -->
+                <div class="loading-state" id="loadingState">
+
+                    <div class="loading-animation">
+
+                        <div class="loader-ring"></div>
+
+                        <i class="fa-solid fa-qrcode"></i>
+
+                    </div>
+
+                    <h4 id="loadingTitle">Fetching...</h4>
+
+                    <p id="loadingDescription">
+                        Preparing your content
+                    </p>
+
+                    <div class="progress">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+
+                </div>
+
+
+                <!-- QR Code -->
+                <div class="qr-result" id="qrResult">
+
+                    <div class="qr-image-wrapper">
+
+                        <div id="qrcode"></div>
+
+                        <div class="success-badge" id="successBadge">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+
+                    </div>
+
+                    <div class="success-text">
+
+                        <div class="success-title">
+                            <span class="success-tick">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+
+                            QR Code Generated
+                        </div>
+
+                        <p>
+                            Your QR code is ready to scan.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="actions" id="actions">
+
+                <button class="action-btn secondary" id="copyBtn">
+
+                    <i class="fa-regular fa-copy"></i>
+
+                    Copy
+
+                </button>
+
+                <button class="action-btn primary" id="downloadBtn">
+
+                    <i class="fa-solid fa-download"></i>
+
+                    Download PNG
+
+                </button>
+
+            </div>
+
+
+            <!-- Footer -->
+            <div class="preview-footer">
+
+                <div>
+                    <i class="fa-solid fa-bolt"></i>
+                    Instant generation
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-lock"></i>
+                    Private
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-mobile-screen"></i>
+                    Scan anywhere
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Bottom Footer -->
+    <footer>
+
+        <span>
+            © 2026   yourQR
+        </span>
+
+        <span class="footer-separator">•</span>
+
+        <span>
+             Made by Aryan
+        </span>
+
+    </footer>
+
+</main>
+
+
+<!-- Toast -->
+<div class="toast" id="toast">
+
+    <div class="toast-icon">
+        <i class="fa-solid fa-check"></i>
+    </div>
+
+    <div>
+        <strong id="toastTitle">Success</strong>
+        <span id="toastMessage">QR Code generated successfully.</span>
+    </div>
+
+</div>
+
+
+<script src="Qr.js"></script>
+  
+
+</body>
+</html>
