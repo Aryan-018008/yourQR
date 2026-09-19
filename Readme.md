@@ -8,7 +8,7 @@ A modern, responsive, and user-friendly **QR Code Generator** built with HTML, C
 
 ## Deployement
 
-yourQR is live at 
+yourQR is live at https://yourqr18.netlify.app/
 
 ---
 
